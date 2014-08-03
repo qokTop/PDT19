@@ -1,16 +1,18 @@
 package com.example.tests;
 
-public class GroupData {
+public class ValueObject {
+	
 	public String name;
 	public String header;
 	public String footer;
 	
-	public GroupData() {		
+	public ValueObject() {		
 	}
 
-	public GroupData(String groupname, String header, String footer) {
+	public ValueObject(String groupname, String header, String footer) {
 		this.name = groupname;
 		this.header = header;
 		this.footer = footer;
 	}
+	
 }
