@@ -9,7 +9,7 @@ public class GroupCreationTests extends TestBase {
 	openMainPage();
     goToGroupsPage();
     initGroupCreation();
-    ValueObject group = new ValueObject();
+    GroupData group = new GroupData();
     group.name = "group name 1";
     group.header = "header 1";
     group.footer = "footer 1";
@@ -23,7 +23,7 @@ public class GroupCreationTests extends TestBase {
 	openMainPage();
     goToGroupsPage();
     initGroupCreation();
-    fillGroupForm(new ValueObject("", "", ""));
+    fillGroupForm(new GroupData("", "", ""));
     submitGroupCreation();
     returnToGroupsPage();
   }
