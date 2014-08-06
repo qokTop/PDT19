@@ -1,4 +1,4 @@
-package com.example.tests;
+package com.addressbook.tests;
 
 public class GroupData {
 	
