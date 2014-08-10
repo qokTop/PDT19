@@ -8,8 +8,8 @@ public class ContactCreationTests extends TestBase {
 
   @Test
   public void testContactCreation() throws Exception {    	
-	app.getNavigationHelper().openMainPage();
-    app.getNavigationHelper().goToContactCreationPage();
+	appManager.getNavigationHelper().openMainPage();
+    appManager.getNavigationHelper().goToContactCreationPage();
     
     ContactData contact = new ContactData();   
 	contact.firstName = "firstName value";
@@ -29,22 +29,34 @@ public class ContactCreationTests extends TestBase {
 	contact.secondaryAddress = "secondaryAddress value";
 	contact.secondaryHome = "secondaryHome value";
 	
-	app.getContactHelper().fillContactForm(contact);
-    app.getContactHelper().submitContactCreation();
-    app.getContactHelper().returnToHomePage();
+	appManager.getContactHelper().fillContactForm(contact);
+    appManager.getContactHelper().submitContactCreation();
+    appManager.getContactHelper().returnToHomePage();
   }
   
   @Test
   public void testEmptyContactCreation() throws Exception {
-	app.getNavigationHelper().openMainPage();
-    app.getNavigationHelper().goToContactCreationPage();
+	appManager.getNavigationHelper().openMainPage();
+    appManager.getNavigationHelper().goToContactCreationPage();
+    
     ContactData emptyContact = new ContactData();
+    emptyContact.firstName = "";
+	emptyContact.lastName = "";
+	emptyContact.address = "";
+	emptyContact.home = "";
+	emptyContact.mobile = "";
+	emptyContact.work = "";
+	emptyContact.email = "";
+	emptyContact.email2 = "";
     emptyContact.birthDay = "-";
     emptyContact.birthMonth = "-";
     emptyContact.group = "[none]";
-    app.getContactHelper().fillContactForm(emptyContact);
-    app.getContactHelper().submitContactCreation();
-    app.getContactHelper().returnToHomePage();
+    emptyContact.secondaryAddress = "";
+    emptyContact.secondaryHome = "";
+    
+    appManager.getContactHelper().fillContactForm(emptyContact);
+    appManager.getContactHelper().submitContactCreation();
+    appManager.getContactHelper().returnToHomePage();
   }
   
 }

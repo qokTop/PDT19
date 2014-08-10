@@ -7,16 +7,16 @@ import com.addressbook.fw.ApplicationManager;
 
 public class TestBase {
 	
-    protected ApplicationManager app;
+    protected static ApplicationManager appManager;
 	
     @BeforeTest
 	public void setUp() throws Exception {
-		app = new ApplicationManager();	    
+		appManager = new ApplicationManager();	    
 	}
 	
 	@AfterTest
 	public void tearDown() throws Exception {
-		app.stop();	    
+		appManager.stop();	    
 	}
 
 }

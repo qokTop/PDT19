@@ -19,29 +19,7 @@ public class ContactData {
 	public String secondaryHome;
 	
 	public ContactData() {
+		
 	}
-
-	
-
-	/*public ContactData(String firstName, String lastName, String address,
-			String home, String mobile, String work, String email,
-			String email2, String birthDay, String birthMonth,
-			String birthYear, String group, String secondaryAddress,
-			String secondaryHome) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.address = address;
-		this.home = home;
-		this.mobile = mobile;
-		this.work = work;
-		this.email = email;
-		this.email2 = email2;
-		this.birthDay = birthDay;
-		this.birthMonth = birthMonth;
-		this.birthYear = birthYear;
-		this.group = group;
-		this.secondaryAddress = secondaryAddress;
-		this.secondaryHome = secondaryHome;
-	}*/
 	
 }
