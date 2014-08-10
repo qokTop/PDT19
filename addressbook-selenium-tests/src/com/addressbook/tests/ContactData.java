@@ -1,5 +1,6 @@
 package com.addressbook.tests;
 
+
 public class ContactData {
 	
 	public String firstName;
@@ -20,7 +21,9 @@ public class ContactData {
 	public ContactData() {
 	}
 
-	public ContactData(String firstName, String lastName, String address,
+	
+
+	/*public ContactData(String firstName, String lastName, String address,
 			String home, String mobile, String work, String email,
 			String email2, String birthDay, String birthMonth,
 			String birthYear, String group, String secondaryAddress,
@@ -39,6 +42,6 @@ public class ContactData {
 		this.group = group;
 		this.secondaryAddress = secondaryAddress;
 		this.secondaryHome = secondaryHome;
-	}
+	}*/
 	
 }
