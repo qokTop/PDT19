@@ -6,7 +6,6 @@ public class GroupCreationTests extends TestBase {
 	
   @Test
   public void testNonEmptyGroupCreation() throws Exception {
-	appManager.getNavigationHelper().openMainPage();
     appManager.getNavigationHelper().goToGroupsPage();
     appManager.getContactHelper().initGroupCreation();
     GroupData group = new GroupData();
@@ -20,7 +19,6 @@ public class GroupCreationTests extends TestBase {
   
   @Test
   public void testEmptyGroupCreation() throws Exception {
-	appManager.getNavigationHelper().openMainPage();
     appManager.getNavigationHelper().goToGroupsPage();
     appManager.getContactHelper().initGroupCreation();
     GroupData emptyGroup = new GroupData();

@@ -39,4 +39,48 @@ public class ContactHelper extends BaseHelper {
 		click(By.linkText("home page"));
 	}
 
+	public void openEditPageOfContact(int index) {
+		click(By.xpath("//tbody/tr[" + (index + 1) + "]/td[7]/a"));
+	}
+
+	public void submitContactModification() {
+		click(By.name("update"));		
+	}
+
+	public void viewDetailsOfContact(int index) {
+		click(By.xpath("//tbody/tr[" + (index + 1) + "]/td[6]/a"));		
+	}
+
+	public void initModificationOfContact() {
+		click(By.name("modifiy"));		
+	}
+
+	public void selectGroup(String groupName) {
+		click(By.xpath("//select[@name='group']/option[text()='" + groupName +"'][1]"));		
+	}
+
+	public void removeFromGroup() {
+		click(By.name("remove"));		
+	}
+
+	public void selectContact(int index) {
+		click(By.xpath("//tbody/tr[" + (index + 1) + "]/td[1]/input"));		
+	}
+
+	public void returnToGroupPage(String groupName) {
+		click(By.linkText("group page " + '"' + groupName + '"'));		
+	}
+
+	public void selectGroupTo(String groupName) {
+		click(By.xpath("//select[@name='to_group']/option[text()='" + groupName +"'][1]"));		
+	}
+
+	public void addContactToGroup() {
+		click(By.name("add"));		
+	}
+
+	public void deleteContact() {
+		click(By.xpath("//div//form[2]/input[@name='update']"));	
+	}
+
 }

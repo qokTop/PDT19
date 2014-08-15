@@ -6,7 +6,6 @@ public class GroupModificationTests extends TestBase {
 	
 	@Test
 	public void testModifyGroup() {
-		appManager.getNavigationHelper().openMainPage();
 		appManager.getNavigationHelper().goToGroupsPage();
 		appManager.getGroupHelper().initModificationOfGroup(1);
 		GroupData group = new GroupData();

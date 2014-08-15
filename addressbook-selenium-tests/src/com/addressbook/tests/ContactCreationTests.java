@@ -8,7 +8,6 @@ public class ContactCreationTests extends TestBase {
 
   @Test
   public void testContactCreation() throws Exception {    	
-	appManager.getNavigationHelper().openMainPage();
     appManager.getNavigationHelper().goToContactCreationPage();
     
     ContactData contact = new ContactData();   
@@ -36,7 +35,6 @@ public class ContactCreationTests extends TestBase {
   
   @Test
   public void testEmptyContactCreation() throws Exception {
-	appManager.getNavigationHelper().openMainPage();
     appManager.getNavigationHelper().goToContactCreationPage();
     
     ContactData emptyContact = new ContactData();
