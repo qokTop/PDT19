@@ -30,5 +30,5 @@ public abstract class BaseHelper {
 			new Select(driver.findElement(locator)).selectByVisibleText(text);
 		}
 	}
-
+	
 }
