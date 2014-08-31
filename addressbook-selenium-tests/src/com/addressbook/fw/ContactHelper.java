@@ -88,7 +88,7 @@ public class ContactHelper extends BaseHelper {
 	}
 
 	public List<ContactData> getContacts() {
-		List<ContactData> contacts = new ArrayList<ContactData>();
+		/*List<ContactData> contacts = new ArrayList<ContactData>();
 		List<WebElement> checkboxes = driver.findElements(By.name("selected[]"));
 		for (WebElement checkbox : checkboxes) {
 			ContactData contact = new ContactData();
@@ -97,10 +97,28 @@ public class ContactHelper extends BaseHelper {
 			//contact.firstName = firstLastNames.substring(0, firstLastNames.indexOf(" ") - 1);
 			contact.lastName = firstLastNames.substring(firstLastNames.indexOf(" ") + 1, firstLastNames.length());
 			contacts.add(contact);
+		{
+		return contacts;*/
+		List<ContactData> contacts = new ArrayList<ContactData>();
+		List<WebElement> rows = getContactRows();
+		for (WebElement row : rows) {			
+		    ContactData contact = new ContactData();
+		    // FIXME There are incorrectly columns in the table: lastName and firstname
+		    //       change objects after fixing
+		    contact.firstName = row.findElement(By.xpath(".//td[3]")).getText();
+		    contact.lastName  = row.findElement(By.xpath(".//td[2]")).getText();
+		    contacts.add(contact);
 		}
 		return contacts;
 	}
 	
+	private List<WebElement> getContactRows() {
+		List<WebElement> rows = driver.findElements(By.xpath("//tbody/tr"));
+		rows.remove(0);
+		rows.remove(rows.size() - 1);
+		return rows;		
+	}
+
 	public String getContactLastName(int index) {
 		return driver.findElement(By.xpath("//tbody//tr[" + (index + 2) +"]//td[2]")).getText();
 	}

@@ -12,7 +12,7 @@ import com.addressbook.logic.RandomDate;
 public class ContactModificationTests extends TestBase {
 	
 	@Test
-	public void testModifyContact() throws InterruptedException {
+	public void testModifyContact() {
 		int tdNumOfContact = 0;
 		
 		// save old state
