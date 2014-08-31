@@ -4,22 +4,24 @@ import static org.testng.Assert.assertEquals;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import org.testng.annotations.Test;
 
 public class GroupModificationTests extends TestBase {
 	
-	@Test
-	public void testModifyGroup() {
+	@Test(dataProvider = "randomValidGroupGenerator")
+	public void testModifyGroup(GroupData group) {
 		appManager.getNavigationHelper().goToGroupsPage();
 		
 		// save old state
 	    List<GroupData> oldList = appManager.getGroupHelper().getGroups();
 	    
+	    Random rnd = new Random();
+	    int index = rnd.nextInt(oldList.size() - 1);
+	    
 	    // actions
-		appManager.getGroupHelper().initModificationOfGroup(0);
-		GroupData group = new GroupData();
-		group.name = "new name";
+		appManager.getGroupHelper().initModificationOfGroup(index);
 		appManager.getGroupHelper().fillGroupForm(group);
 		appManager.getGroupHelper().submitGroupModification();
 		appManager.getGroupHelper().returnToGroupsPage();
@@ -28,7 +30,7 @@ public class GroupModificationTests extends TestBase {
 	    List<GroupData> newList = appManager.getGroupHelper().getGroups();
 	    
 	    // compare states
-	    oldList.remove(0);
+	    oldList.remove(index);
 	    oldList.add(group);
 	    Collections.sort(oldList);
 	    assertEquals(newList, oldList);

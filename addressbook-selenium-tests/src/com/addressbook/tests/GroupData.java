@@ -11,16 +11,17 @@ public class GroupData implements Comparable<GroupData> {
 	}
 
 	@Override
-	public String toString() {
-		return "GroupData [name=" + name + "]";
-	}
-
-	@Override
 	public int hashCode() {
 		//final int prime = 31;
 		int result = 1;
 		//result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
+	}
+
+	@Override
+	public String toString() {
+		return "GroupData [name=" + name + ", header=" + header + ", footer="
+				+ footer + "]";
 	}
 
 	@Override

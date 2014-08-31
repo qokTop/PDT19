@@ -36,12 +36,12 @@ public class RandomDate {
 		
 		int dd;
 		if (mm == 1 || mm == 3 || mm == 5 || mm == 7 || mm == 8 || mm == 10 || mm == 12) 
-			dd = rand.nextInt(31);
+			dd = rand.nextInt(31) + 1;
 		if (mm == 4 || mm == 6 || mm == 9 || mm == 11) 
-			dd = rand.nextInt(30);
+			dd = rand.nextInt(30) + 1;
 		if (mm == 2 && isLeapYear(yyyy))
-			dd = rand.nextInt(29);
-		else dd = rand.nextInt(28);	
+			dd = rand.nextInt(29) + 1;
+		else dd = rand.nextInt(28) + 1;	
 		log.info("Random date is: " + Integer.toString(dd) + " " + month[mm] + " " + Integer.toString(yyyy));
 		return Integer.toString(dd) + " " + month[mm] + " " + Integer.toString(yyyy);		
 	}

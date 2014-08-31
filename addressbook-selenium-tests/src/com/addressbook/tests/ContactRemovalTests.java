@@ -4,27 +4,29 @@ import static org.testng.Assert.assertEquals;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import org.testng.annotations.Test;
 
 public class ContactRemovalTests extends TestBase {
 	
 	@Test
-	public void testDeleteContactViaEditPage() {
-		int tdNumOfContact = 1;
-		
+	public void testDeleteContactViaEditPage() {		
 		// save old state
 		List<ContactData> oldList = appManager.getContactHelper().getContacts();
 		
+		Random rnd = new Random();
+	    int index = rnd.nextInt(oldList.size() - 1);
+		
 		// actions
-		appManager.getContactHelper().openEditPageOfContact(tdNumOfContact);
+		appManager.getContactHelper().openEditPageOfContact(index);
 		appManager.getContactHelper().deleteContact();
 		appManager.getContactHelper().returnToHomePage();
 		
 		// save new state
 	    List<ContactData> newList = appManager.getContactHelper().getContacts();
 	    
-	    oldList.remove(tdNumOfContact);
+	    oldList.remove(index);
 	    Collections.sort(oldList);
 	    assertEquals(newList, oldList);
 	}
