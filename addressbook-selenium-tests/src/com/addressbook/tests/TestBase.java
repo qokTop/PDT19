@@ -64,13 +64,16 @@ public class TestBase {
 			contact.birthMonth = randDate.getMonthFromDate(date);
 			contact.birthYear = randDate.getYearFromDate(date);
 			
-			/*appManager.getNavigationHelper().goToGroupsPage();
-			List<GroupData> groupsList = appManager.getGroupHelper().getGroups();
+			appManager.getNavigationHelper().openMainPage();
+			appManager.getNavigationHelper().goToGroupsPage();
+			List<String> groupNames= appManager.getGroupHelper().getGroupNonEmptyNames();
 			Random rnd = new Random();
-		    int index = rnd.nextInt(groupsList.size() - 1);
-			contact.group = groupsList.get(index).name;
-			appManager.getNavigationHelper().openMainPage();*/
-			contact.group = "group 1";
+			int indexOfGroupName;
+			if (groupNames.size() >= 2)
+		        indexOfGroupName = rnd.nextInt(groupNames.size() - 1);
+			else
+				indexOfGroupName = 0;
+			contact.group = appManager.getGroupHelper().getGroupNonEmptyNames().get(indexOfGroupName);
 			
 			contact.secondaryAddress = generateRandomString("secondaryAddress");
 			contact.secondaryHome = generateRandomString("secondaryHome");
@@ -113,4 +116,12 @@ public class TestBase {
 			return fixString + rnd.nextInt();
 	}
 
+	@DataProvider
+	public Iterator<Object[]> provideGroupNonEmptyNames() {
+		List<Object[]> list = new ArrayList<Object[]>();
+		appManager.getNavigationHelper().openMainPage();
+		appManager.getNavigationHelper().goToGroupsPage();
+		list.add(new Object[]{appManager.getGroupHelper().getGroupNonEmptyNames()});
+		return list.iterator();
+	}
 }

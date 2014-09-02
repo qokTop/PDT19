@@ -63,4 +63,14 @@ public class GroupHelper extends BaseHelper {
 		return groups;
 	}
 
+	public List<String> getGroupNonEmptyNames() {
+		List<String> groupNames = new ArrayList<String>();
+		List<GroupData> groups = getGroups();
+		for (GroupData group : groups) {
+			if (!group.name.equals(""))
+				groupNames.add(group.name);
+		}		
+		return groupNames;
+	}
+
 }

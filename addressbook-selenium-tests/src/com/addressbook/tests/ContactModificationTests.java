@@ -59,13 +59,20 @@ public class ContactModificationTests extends TestBase {
 	    assertEquals(newList, oldList);
 	}
 	
-	@Test
-	public void testAddContactToGroup() {
-		String tdGroupName = "group 1";
+	@Test(dataProvider = "provideGroupNonEmptyNames")
+	public void testAddContactToGroup(List<String> groupNames) {
 		String tdGroupNameAll = "[all]";
-		
+			
 		// save old state
-		appManager.getContactHelper().selectGroup(tdGroupName);
+		Random rnd = new Random();
+		int indexOfGroupName;
+		if (groupNames.size() >= 2)
+	        indexOfGroupName = rnd.nextInt(groupNames.size() - 1);
+		else
+			indexOfGroupName = 0;
+
+		String groupName = groupNames.get(indexOfGroupName);
+		appManager.getContactHelper().selectGroup(groupName);
 		List<ContactData> oldList = appManager.getContactHelper().getContacts();
 		
 		// return back
@@ -74,20 +81,23 @@ public class ContactModificationTests extends TestBase {
 		// get the last name of modified contact
 		ContactData contact = new ContactData();
 		
-		Random rnd = new Random();
-	    int index = rnd.nextInt(oldList.size() - 1);
-	    
+		int index;
+		if (oldList.size() >= 2)
+	        index = rnd.nextInt(oldList.size() - 1);
+		else
+			index = 0;
+		
 		String lastNameOfModifiedContact = appManager.getContactHelper().getContactLastName(index);
 		contact.lastName = lastNameOfModifiedContact;
 						
 		// actions
 		appManager.getContactHelper().selectContact(index);		
-		appManager.getContactHelper().selectGroupTo(tdGroupName);
+		appManager.getContactHelper().selectGroupTo(groupName);
 		appManager.getContactHelper().addContactToGroup();
-		appManager.getContactHelper().returnToGroupPage(tdGroupName);
+		appManager.getContactHelper().returnToGroupPage(groupName);
 		
 		// save new state
-		appManager.getContactHelper().selectGroup(tdGroupName);
+		appManager.getContactHelper().selectGroup(groupName);
 	    List<ContactData> newList = appManager.getContactHelper().getContacts();
 	    
 	    oldList.remove(index);
@@ -96,20 +106,28 @@ public class ContactModificationTests extends TestBase {
 	    assertEquals(newList, oldList);
 	}
 	
-	@Test
-	public void testRemoveContactFromGroup() {
-		String tdGroupName = "group 1";
-		
-		appManager.getContactHelper().selectGroup(tdGroupName);
-								
+	@Test(dataProvider = "provideGroupNonEmptyNames")
+	public void testRemoveContactFromGroup(List<String> groupNames) {
 		// save old state
+		int indexOfGroupName;
+		Random rnd = new Random();
+		if (groupNames.size() >= 2)
+	        indexOfGroupName = rnd.nextInt(groupNames.size() - 1);
+		else
+			indexOfGroupName = 0;
+
+		String groupName = groupNames.get(indexOfGroupName);
+		appManager.getContactHelper().selectGroup(groupName);
 		List<ContactData> oldList = appManager.getContactHelper().getContacts();
 		
 		// get the last name of modified contact
 		ContactData contact = new ContactData();
 		
-		Random rnd = new Random();
-	    int index = rnd.nextInt(oldList.size() - 1);
+		int index;
+		if (oldList.size() >= 2)
+	        index = rnd.nextInt(oldList.size() - 1);
+		else
+			index = 0;
 	    
 		String lastNameOfModifiedContact = appManager.getContactHelper().getContactLastName(index);
 		contact.lastName = lastNameOfModifiedContact;
@@ -117,8 +135,8 @@ public class ContactModificationTests extends TestBase {
 		// actions
 		appManager.getContactHelper().selectContact(index);
 		appManager.getContactHelper().removeFromGroup();
-		appManager.getContactHelper().returnToGroupPage(tdGroupName);
-		appManager.getContactHelper().selectGroup(tdGroupName);
+		appManager.getContactHelper().returnToGroupPage(groupName);
+		appManager.getContactHelper().selectGroup(groupName);
 		
 		// save new state
 	    List<ContactData> newList = appManager.getContactHelper().getContacts();
