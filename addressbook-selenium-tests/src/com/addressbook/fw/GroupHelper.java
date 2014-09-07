@@ -13,52 +13,64 @@ public class GroupHelper extends BaseHelper {
 	public GroupHelper(ApplicationManager manager) {
 		super(manager);
 	}
+	
+	public GroupHelper initGroupCreation() {
+		click(By.name("new"));
+		return this;
+	}
 
-	public void returnToGroupsPage() {	
+	public GroupHelper returnToGroupsPage() {	
 	    click(By.linkText("group page"));
+	    return this;
 	}
 
-	public void submitGroupCreation() {
+	public GroupHelper submitGroupCreation() {
 	    click(By.name("submit"));
+	    return this;
 	}
 
-	public void fillGroupForm(GroupData group) {
-	    type(By.name("group_name"), group.name);
-	    type(By.name("group_header"), group.header);
-	    type(By.name("group_footer"), group.footer);
+	public GroupHelper fillGroupForm(GroupData group) {
+		type(By.name("group_name"), group.getName());
+	    type(By.name("group_header"), group.getHeader());
+	    type(By.name("group_footer"), group.getFooter());
+	    return this;
 	}
 	
-	private void selectGroupByIndex(int index) {
+	private GroupHelper selectGroupByIndex(int index) {
 		click(By.xpath("//input[@name='selected[]'][" + (index + 1) + "]"));
+		return this;
 	}
 
-	public void deleteGroup(int index) {
+	public GroupHelper deleteGroup(int index) {
 		selectGroupByIndex(index);
 		click(By.name("delete"));
+		return this;
 	}
 
-	public void initModificationOfGroup(int index) {
+	public GroupHelper initModificationOfGroup(int index) {
 		selectGroupByIndex(index);
-		click(By.name("edit"));		
+		click(By.name("edit"));	
+		return this;
 	}
 
-	public void modifyGroup(GroupData group) {
-		type(By.name("group_name"), group.name);
+	public GroupHelper modifyGroup(GroupData group) {
+		type(By.name("group_name"), group.getName());
+		return this;
 		
 	}
 
-	public void submitGroupModification() {
-		click(By.name("update"));			
+	public GroupHelper submitGroupModification() {
+		click(By.name("update"));		
+		return this;
 	}
 
 	public List<GroupData> getGroups() {
 		List<GroupData> groups = new ArrayList<GroupData>();
 		List<WebElement> checkboxes = driver.findElements(By.name("selected[]"));
 		for (WebElement checkbox : checkboxes) {
-			GroupData group = new GroupData();
 			String title = checkbox.getAttribute("title");		
-			group.name = title.substring("Select (".length(), title.length() - ")".length());
-			groups.add(group);
+			String name = title.substring("Select (".length(), title.length() - ")".length());
+			groups.add(new GroupData().withName(name));
 		}
 		return groups;
 	}
@@ -67,8 +79,8 @@ public class GroupHelper extends BaseHelper {
 		List<String> groupNames = new ArrayList<String>();
 		List<GroupData> groups = getGroups();
 		for (GroupData group : groups) {
-			if (!group.name.equals(""))
-				groupNames.add(group.name);
+			if (!group.getName().equals(""))
+				groupNames.add(group.getName());
 		}		
 		return groupNames;
 	}

@@ -16,10 +16,10 @@ public class ContactCreationTests extends TestBase {
     // actions
 	appManager.getNavigationHelper().goToContactCreationPage();
     
-	
-	appManager.getContactHelper().fillContactForm(contact);
-    appManager.getContactHelper().submitContactCreation();
-    appManager.getContactHelper().returnToHomePage();
+	appManager.getContactHelper()
+		.fillContactForm(contact)
+		.submitContactCreation()
+    	.returnToHomePage();
     
     // save new state
     List<ContactData> newList = appManager.getContactHelper().getContacts();

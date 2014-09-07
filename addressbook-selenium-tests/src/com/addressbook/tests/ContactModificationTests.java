@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 
 public class ContactModificationTests extends TestBase {
 	
-	@Test(dataProvider = "randomValidContactGeneratorForModification")
+	@Test(dataProvider = "randomValidContactGenerator")
 	public void testModifyContact(ContactData contact) {
 		// save old state
 		List<ContactData> oldList = appManager.getContactHelper().getContacts();
@@ -19,10 +19,11 @@ public class ContactModificationTests extends TestBase {
 	    int index = rnd.nextInt(oldList.size() - 1);
 		
 		// actions
-		appManager.getContactHelper().openEditPageOfContact(index);	
-		appManager.getContactHelper().fillContactForm(contact);
-		appManager.getContactHelper().submitContactModification();
-		appManager.getContactHelper().returnToHomePage();
+		appManager.getContactHelper()
+			.openEditPageOfContact(index)
+			.fillContactForm(contact)
+			.submitContactModification()
+			.returnToHomePage();
 		
 		// save new state
 	    List<ContactData> newList = appManager.getContactHelper().getContacts();
@@ -34,7 +35,7 @@ public class ContactModificationTests extends TestBase {
 	    assertEquals(newList, oldList);
 	}
 	
-	@Test(dataProvider = "randomValidContactGeneratorForModification")
+	@Test(dataProvider = "randomValidContactGenerator")
 	public void testModifyContactViaDetailsPage(ContactData contact) {
 		// save old state
 		List<ContactData> oldList = appManager.getContactHelper().getContacts();
@@ -43,11 +44,12 @@ public class ContactModificationTests extends TestBase {
 	    int index = rnd.nextInt(oldList.size() - 1);
 				
 		// actions
-		appManager.getContactHelper().viewDetailsOfContact(index);
-		appManager.getContactHelper().initModificationOfContact();		
-		appManager.getContactHelper().fillContactForm(contact);
-		appManager.getContactHelper().submitContactModification();
-		appManager.getContactHelper().returnToHomePage();
+		appManager.getContactHelper()
+			.viewDetailsOfContact(index)
+			.initModificationOfContact()
+			.fillContactForm(contact)
+			.submitContactModification()
+			.returnToHomePage();
 		
 		// save new state
 	    List<ContactData> newList = appManager.getContactHelper().getContacts();
@@ -78,9 +80,6 @@ public class ContactModificationTests extends TestBase {
 		// return back
 		appManager.getContactHelper().selectGroup(tdGroupNameAll);
 		
-		// get the last name of modified contact
-		ContactData contact = new ContactData();
-		
 		int index;
 		if (oldList.size() >= 2)
 	        index = rnd.nextInt(oldList.size() - 1);
@@ -88,13 +87,17 @@ public class ContactModificationTests extends TestBase {
 			index = 0;
 		
 		String lastNameOfModifiedContact = appManager.getContactHelper().getContactLastName(index);
-		contact.lastName = lastNameOfModifiedContact;
+		
+		// get the last name of modified contact
+		ContactData contact = new ContactData()
+			.withLastName(lastNameOfModifiedContact);
 						
 		// actions
-		appManager.getContactHelper().selectContact(index);		
-		appManager.getContactHelper().selectGroupTo(groupName);
-		appManager.getContactHelper().addContactToGroup();
-		appManager.getContactHelper().returnToGroupPage(groupName);
+		appManager.getContactHelper()
+			.selectContact(index)
+			.selectGroupTo(groupName)
+			.addContactToGroup()
+			.returnToGroupPage(groupName);
 		
 		// save new state
 		appManager.getContactHelper().selectGroup(groupName);
@@ -120,23 +123,24 @@ public class ContactModificationTests extends TestBase {
 		appManager.getContactHelper().selectGroup(groupName);
 		List<ContactData> oldList = appManager.getContactHelper().getContacts();
 		
-		// get the last name of modified contact
-		ContactData contact = new ContactData();
-		
 		int index;
 		if (oldList.size() >= 2)
 	        index = rnd.nextInt(oldList.size() - 1);
 		else
 			index = 0;
-	    
-		String lastNameOfModifiedContact = appManager.getContactHelper().getContactLastName(index);
-		contact.lastName = lastNameOfModifiedContact;
+		
+		/*String lastNameOfModifiedContact = appManager.getContactHelper().getContactLastName(index);
+		
+		// get the last name of modified contact
+		ContactData contact = new ContactData()
+			.withLastName(lastNameOfModifiedContact);*/
 		
 		// actions
-		appManager.getContactHelper().selectContact(index);
-		appManager.getContactHelper().removeFromGroup();
-		appManager.getContactHelper().returnToGroupPage(groupName);
-		appManager.getContactHelper().selectGroup(groupName);
+		appManager.getContactHelper()
+			.selectContact(index)
+			.removeFromGroup()
+			.returnToGroupPage(groupName)
+			.selectGroup(groupName);
 		
 		// save new state
 	    List<ContactData> newList = appManager.getContactHelper().getContacts();

@@ -19,9 +19,10 @@ public class ContactRemovalTests extends TestBase {
 	    int index = rnd.nextInt(oldList.size() - 1);
 		
 		// actions
-		appManager.getContactHelper().openEditPageOfContact(index);
-		appManager.getContactHelper().deleteContact();
-		appManager.getContactHelper().returnToHomePage();
+		appManager.getContactHelper()
+			.openEditPageOfContact(index)
+			.deleteContact()
+			.returnToHomePage();
 		
 		// save new state
 	    List<ContactData> newList = appManager.getContactHelper().getContacts();
@@ -42,9 +43,10 @@ public class ContactRemovalTests extends TestBase {
 			List<ContactData> oldList = appManager.getContactHelper().getContacts();
 			
 			// actions
-			appManager.getContactHelper().openEditPageOfContact(tdNumOfContact);
-			appManager.getContactHelper().deleteContact();
-			appManager.getContactHelper().returnToHomePage();	
+			appManager.getContactHelper()
+				.openEditPageOfContact(tdNumOfContact)
+				.deleteContact()
+				.returnToHomePage();	
 			
 			// save new state
 		    List<ContactData> newList = appManager.getContactHelper().getContacts();

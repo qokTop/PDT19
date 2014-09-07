@@ -16,6 +16,9 @@ import com.addressbook.logic.RandomDate;
 public class TestBase {
 	
     protected static ApplicationManager appManager;
+	//private String name;
+    
+    private static boolean isItForModification = true;
     
     @BeforeMethod
     public void beforeTestMethod() throws Exception {
@@ -36,21 +39,50 @@ public class TestBase {
 	public Iterator<Object[]> randomValidGroupGenerator() {
 		List<Object[]> list = new ArrayList<Object[]>();
 	    for (int i = 0; i < 4; i++) {
-	    	GroupData group = new GroupData();
-			group.name = generateRandomString("name");
-			group.header = generateRandomString("header");
-			group.footer = generateRandomString("footer");
+	    	GroupData group = new GroupData()
+	    		.withName(generateRandomString("name"))
+	    		.withHeader(generateRandomString("header"))
+	    		.withFooter(generateRandomString("footer"));
 			list.add(new Object[]{group});
 		}
 	    return list.iterator();
 	}
-	
+
 	@DataProvider
 	public Iterator<Object[]> randomValidContactGenerator() {
 		List<Object[]> list = new ArrayList<Object[]>();
-	    for (int i = 0; i < 4; i++) {			
-			ContactData contact = new ContactData();   
-			contact.firstName = generateRandomString("firstName");
+	    for (int i = 0; i < 4; i++) {		
+	    	RandomDate randDate = new RandomDate();
+			String date = randDate.getRandomDateAsString(1900, 1996); 
+			
+			ContactData contact = new ContactData()
+				.withFirstName(generateRandomString("firstName"))
+				.withLastName(generateRandomString("lastName"))
+				.withAddress(generateRandomString("address"))
+				.withHome(generateRandomString("home"))
+				.withMobile(generateRandomString("mobile"))
+				.withWork(generateRandomString("work"))
+				.withEmail(generateRandomString("email"))
+				.withEmail2(generateRandomString("email2"))
+				.withBirthDay(randDate.getDayFromDate(date))
+				.withBirthMonth(randDate.getMonthFromDate(date))
+				.withBirthYear(randDate.getYearFromDate(date))		
+				.withSecondaryAddress(generateRandomString("secondaryAddress"))
+				.withSecondaryHome(generateRandomString("secondaryHome"));
+			if (!isItForModification) {
+				appManager.getNavigationHelper().openMainPage();
+				appManager.getNavigationHelper().goToGroupsPage();
+				List<String> groupNames= appManager.getGroupHelper().getGroupNonEmptyNames();
+				Random rnd = new Random();
+				int indexOfGroupName;
+				if (groupNames.size() >= 2)
+					indexOfGroupName = rnd.nextInt(groupNames.size() - 1);
+				else
+					indexOfGroupName = 0;
+				contact.withGroup(appManager.getGroupHelper().getGroupNonEmptyNames().get(indexOfGroupName));	
+			}
+				
+			/*contact.firstName = generateRandomString("firstName");
 			contact.lastName = generateRandomString("lastName");
 			contact.address = generateRandomString("address");
 			contact.home = generateRandomString("home");
@@ -58,31 +90,18 @@ public class TestBase {
 			contact.work = generateRandomString("work");
 			contact.email = generateRandomString("e-mail");
 			contact.email2 = generateRandomString("e-mail2");
-			RandomDate randDate = new RandomDate();
-			String date = randDate.getRandomDateAsString(1900, 1996);  
 			contact.birthDay = randDate.getDayFromDate(date);
 			contact.birthMonth = randDate.getMonthFromDate(date);
 			contact.birthYear = randDate.getYearFromDate(date);
-			
-			appManager.getNavigationHelper().openMainPage();
-			appManager.getNavigationHelper().goToGroupsPage();
-			List<String> groupNames= appManager.getGroupHelper().getGroupNonEmptyNames();
-			Random rnd = new Random();
-			int indexOfGroupName;
-			if (groupNames.size() >= 2)
-		        indexOfGroupName = rnd.nextInt(groupNames.size() - 1);
-			else
-				indexOfGroupName = 0;
-			contact.group = appManager.getGroupHelper().getGroupNonEmptyNames().get(indexOfGroupName);
-			
+			contact.group = appManager.getGroupHelper().getGroupNonEmptyNames().get(indexOfGroupName);			
 			contact.secondaryAddress = generateRandomString("secondaryAddress");
-			contact.secondaryHome = generateRandomString("secondaryHome");
+			contact.secondaryHome = generateRandomString("secondaryHome");*/
 			list.add(new Object[]{contact});
 		}
 	    return list.iterator();
 	}
 	
-	@DataProvider
+	/*@DataProvider
 	public Iterator<Object[]> randomValidContactGeneratorForModification() {
 		List<Object[]> list = new ArrayList<Object[]>();
 	    for (int i = 0; i < 4; i++) {			
@@ -106,7 +125,7 @@ public class TestBase {
 			list.add(new Object[]{contact});
 		}
 	    return list.iterator();
-	}
+	}*/
 	  
 	private String generateRandomString(String fixString) {
 		Random rnd = new Random();

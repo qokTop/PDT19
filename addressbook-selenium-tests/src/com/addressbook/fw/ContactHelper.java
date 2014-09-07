@@ -14,77 +14,87 @@ public class ContactHelper extends BaseHelper {
 		super(manager);
 	}
 
-	public void fillContactForm(ContactData contact) {
-		type(By.name("firstname"), contact.firstName);
-		type(By.name("lastname"), contact.lastName);
-		type(By.name("address"), contact.address);
-		type(By.name("home"), contact.home);
-		type(By.name("mobile"), contact.mobile);
-		type(By.name("work"), contact.work);
-		type(By.name("email"), contact.email);
-		type(By.name("email2"), contact.email2);
-	    selectByText(By.name("bday"), contact.birthDay);
-	    selectByText(By.name("bmonth"), contact.birthMonth);
-	    type(By.name("byear"), contact.birthYear);
-	    selectByText(By.name("new_group"), contact.group);
-	    type(By.name("address2"), contact.secondaryAddress);
-	    type(By.name("phone2"), contact.secondaryHome);
+	public ContactHelper fillContactForm(ContactData contact) {
+		type(By.name("firstname"), contact.getFirstName());
+		type(By.name("lastname"), contact.getLastName());
+		type(By.name("address"), contact.getAddress());
+		type(By.name("home"), contact.getHome());
+		type(By.name("mobile"), contact.getMobile());
+		type(By.name("work"), contact.getWork());
+		type(By.name("email"), contact.getEmail());
+		type(By.name("email2"), contact.getEmail2());
+	    selectByText(By.name("bday"), contact.getBirthDay());
+	    selectByText(By.name("bmonth"), contact.getBirthMonth());
+	    type(By.name("byear"), contact.getBirthYear());
+	    selectByText(By.name("new_group"), contact.getGroup());
+	    type(By.name("address2"), contact.getSecondaryAddress());
+	    type(By.name("phone2"), contact.getSecondaryHome());
+	    return this;
 	}
 
-	public void initGroupCreation() {
-		click(By.name("new"));
-	}
-
-	public void submitContactCreation() {
+	public ContactHelper submitContactCreation() {
 		click(By.name("submit"));
+		return this;
 	}
 
-	public void returnToHomePage() {
+	public ContactHelper returnToHomePage() {
 		click(By.linkText("home page"));
+		return this;
 	}
 
-	public void openEditPageOfContact(int index) {
+	public ContactHelper openEditPageOfContact(int index) {
 		click(By.xpath("//tbody/tr[" + (index + 2) + "]/td[7]/a"));
+		return this;
 	}
 
-	public void submitContactModification() {
-		click(By.name("update"));		
+	public ContactHelper submitContactModification() {
+		click(By.name("update"));	
+		return this;
 	}
 
-	public void viewDetailsOfContact(int index) {
+	public ContactHelper viewDetailsOfContact(int index) {
 		click(By.xpath("//tbody/tr[" + (index + 2) + "]/td[6]/a"));		
+		return this;
 	}
 
-	public void initModificationOfContact() {
+	public ContactHelper initModificationOfContact() {
 		click(By.name("modifiy"));		
+		return this;
 	}
 
-	public void selectGroup(String groupName) {
-		click(By.xpath("//select[@name='group']/option[text()='" + groupName +"'][1]"));		
+	public ContactHelper selectGroup(String groupName) {
+		click(By.xpath("//select[@name='group']/option[text()='" + groupName +"'][1]"));	
+		return this;
 	}
 
-	public void removeFromGroup() {
-		click(By.name("remove"));		
+	public ContactHelper removeFromGroup() {
+		click(By.name("remove"));
+		return this;
 	}
 
-	public void selectContact(int index) {
-		click(By.xpath("//tbody/tr[" + (index + 2) + "]/td[1]/input"));		
+	public ContactHelper selectContact(int index) {
+		click(By.xpath("//tbody/tr[" + (index + 2) + "]/td[1]/input"));	
+		return this;
 	}
 
-	public void returnToGroupPage(String groupName) {
+	public ContactHelper returnToGroupPage(String groupName) {
 		click(By.linkText("group page " + '"' + groupName + '"'));		
+		return this;
 	}
 
-	public void selectGroupTo(String groupName) {
-		click(By.xpath("//select[@name='to_group']/option[text()='" + groupName +"'][1]"));		
+	public ContactHelper selectGroupTo(String groupName) {
+		click(By.xpath("//select[@name='to_group']/option[text()='" + groupName +"'][1]"));	
+		return this;
 	}
 
-	public void addContactToGroup() {
+	public ContactHelper addContactToGroup() {
 		click(By.name("add"));		
+		return this;
 	}
 
-	public void deleteContact() {
-		click(By.xpath("//div//form[2]/input[@name='update']"));	
+	public ContactHelper deleteContact() {
+		click(By.xpath("//div//form[2]/input[@name='update']"));
+		return this;
 	}
 
 	public List<ContactData> getContacts() {
@@ -102,11 +112,13 @@ public class ContactHelper extends BaseHelper {
 		List<ContactData> contacts = new ArrayList<ContactData>();
 		List<WebElement> rows = getContactRows();
 		for (WebElement row : rows) {			
-		    ContactData contact = new ContactData();
+		    ContactData contact = new ContactData()
 		    // FIXME There are incorrectly columns in the table: lastName and firstname
 		    //       change objects after fixing
-		    contact.firstName = row.findElement(By.xpath(".//td[3]")).getText();
-		    contact.lastName  = row.findElement(By.xpath(".//td[2]")).getText();
+		    .withFirstName(row.findElement(By.xpath(".//td[3]")).getText())
+		    .withLastName(row.findElement(By.xpath(".//td[2]")).getText());
+		   /* contact.firstName = row.findElement(By.xpath(".//td[3]")).getText();
+		    contact.lastName  = row.findElement(By.xpath(".//td[2]")).getText();*/
 		    contacts.add(contact);
 		}
 		return contacts;
