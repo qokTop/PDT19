@@ -1,12 +1,13 @@
 package com.addressbook.tests;
 
-import static org.testng.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.Matchers.*;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 import org.testng.annotations.Test;
+
+import com.addressbook.utils.SortedListOf;
 
 public class GroupRemovalTests extends TestBase {
 	
@@ -15,7 +16,7 @@ public class GroupRemovalTests extends TestBase {
 		appManager.getNavigationHelper().goToGroupsPage();
 		
 		// save old state
-	    List<GroupData> oldList = appManager.getGroupHelper().getGroups();	    
+		SortedListOf<GroupData> oldList = appManager.getGroupHelper().getGroups();	    
 	        
 	    // actions
 	    Random rnd = new Random();
@@ -23,12 +24,10 @@ public class GroupRemovalTests extends TestBase {
 	    appManager.getGroupHelper().deleteGroup(index);
 	    			
 		// save new state
-	    List<GroupData> newList = appManager.getGroupHelper().getGroups();
+	    SortedListOf<GroupData> newList = appManager.getGroupHelper().getGroups();
 	    
 	    // compare states
-	    oldList.remove(index);
-	    Collections.sort(oldList);
-	    assertEquals(newList, oldList);
+	    assertThat(newList, equalTo(oldList.without(index)));
 	}
 
 }

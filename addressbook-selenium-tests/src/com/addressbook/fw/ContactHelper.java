@@ -1,12 +1,12 @@
 package com.addressbook.fw;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import com.addressbook.tests.ContactData;
+import com.addressbook.utils.SortedListOf;
 
 public class ContactHelper extends BaseHelper {
 	
@@ -17,9 +17,9 @@ public class ContactHelper extends BaseHelper {
 		super(manager);
 	}
 		
-	private List<ContactData> cachedContacts;
+	private SortedListOf<ContactData> cachedContacts;
 	
-	public List<ContactData> getContacts() {
+	public SortedListOf<ContactData> getContacts() {
 		if (cachedContacts == null) {
 			rebuildContactsCache();
 		}
@@ -27,7 +27,7 @@ public class ContactHelper extends BaseHelper {
 	}
 	
 	private void rebuildContactsCache() {
-		cachedContacts = new ArrayList<ContactData>();
+		cachedContacts = new SortedListOf<ContactData>();
 		List<WebElement> rows = getContactRows();
 		for (WebElement row : rows) {			
 		    ContactData contact = new ContactData()

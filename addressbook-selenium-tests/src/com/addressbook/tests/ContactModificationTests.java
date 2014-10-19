@@ -1,19 +1,21 @@
 package com.addressbook.tests;
 
-import static org.testng.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.Matchers.*;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 import org.testng.annotations.Test;
+
+import com.addressbook.utils.SortedListOf;
 
 public class ContactModificationTests extends TestBase {
 	
 	@Test(dataProvider = "randomValidContactGenerator")
 	public void testModifyContact(ContactData contact) {
 		// save old state
-		List<ContactData> oldList = appManager.getContactHelper().getContacts();		
+		SortedListOf<ContactData> oldList = appManager.getContactHelper().getContacts();		
 		
 		// actions
 		Random rnd = new Random();
@@ -21,20 +23,16 @@ public class ContactModificationTests extends TestBase {
 	    appManager.getContactHelper().modifyContact(index, contact);
 			
 		// save new state
-	    List<ContactData> newList = appManager.getContactHelper().getContacts();
+	    SortedListOf<ContactData> newList = appManager.getContactHelper().getContacts();
 	    
 	    // compare states
-	    oldList.remove(index);
-	    oldList.add(contact);
-	    Collections.sort(oldList);
-	    Collections.sort(newList);
-	    assertEquals(newList, oldList);
+	    assertThat(newList, equalTo(oldList.without(index).withAdded(contact)));
 	}
 	
 	@Test(dataProvider = "randomValidContactGenerator")
 	public void testModifyContactViaDetailsPage(ContactData contact) {
 		// save old state
-		List<ContactData> oldList = appManager.getContactHelper().getContacts();
+		SortedListOf<ContactData> oldList = appManager.getContactHelper().getContacts();
 		
 		Random rnd = new Random();
 	    int index = rnd.nextInt(oldList.size() - 1);
@@ -48,14 +46,10 @@ public class ContactModificationTests extends TestBase {
 			.returnToHomePage();
 		
 		// save new state
-	    List<ContactData> newList = appManager.getContactHelper().getContacts();
+		SortedListOf<ContactData> newList = appManager.getContactHelper().getContacts();
 	    
 	    // compare states
-	    oldList.remove(index);
-	    oldList.add(contact);
-	    Collections.sort(oldList);
-	    Collections.sort(newList);
-	    assertEquals(newList, oldList);
+		assertThat(newList, equalTo(oldList.without(index).withAdded(contact)));
 	}
 	
 	//@Test(dataProvider = "provideGroupNonEmptyNames")
@@ -72,7 +66,7 @@ public class ContactModificationTests extends TestBase {
 
 		String groupName = groupNames.get(indexOfGroupName);
 		appManager.getContactHelper().selectGroup(groupName);
-		List<ContactData> oldList = appManager.getContactHelper().getContacts();
+		SortedListOf<ContactData> oldList = appManager.getContactHelper().getContacts();
 		
 		// return back
 		appManager.getContactHelper().selectGroup(tdGroupNameAll);
@@ -98,12 +92,10 @@ public class ContactModificationTests extends TestBase {
 		
 		// save new state
 		appManager.getContactHelper().selectGroup(groupName);
-	    List<ContactData> newList = appManager.getContactHelper().getContacts();
+		SortedListOf<ContactData> newList = appManager.getContactHelper().getContacts();
 	    
-	    oldList.remove(index);
-	    oldList.add(contact);
-	    Collections.sort(oldList);
-	    assertEquals(newList, oldList);
+		// compare states
+		assertThat(newList, equalTo(oldList.without(index).withAdded(contact)));
 	}
 	
 	//@Test(dataProvider = "provideGroupNonEmptyNames")
@@ -118,7 +110,7 @@ public class ContactModificationTests extends TestBase {
 
 		String groupName = groupNames.get(indexOfGroupName);
 		appManager.getContactHelper().selectGroup(groupName);
-		List<ContactData> oldList = appManager.getContactHelper().getContacts();
+		SortedListOf<ContactData> oldList = appManager.getContactHelper().getContacts();
 		
 		int index;
 		if (oldList.size() >= 2)
@@ -134,13 +126,10 @@ public class ContactModificationTests extends TestBase {
 			.selectGroup(groupName);
 		
 		// save new state
-	    List<ContactData> newList = appManager.getContactHelper().getContacts();
+		SortedListOf<ContactData> newList = appManager.getContactHelper().getContacts();
 	    
 	    // compare states
-	    oldList.remove(index);
-	    Collections.sort(oldList);
-	    Collections.sort(newList);
-	    assertEquals(newList, oldList);
+		assertThat(newList, equalTo(oldList.without(index)));
 	}
 	
 }

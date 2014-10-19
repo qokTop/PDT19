@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import com.addressbook.tests.GroupData;
+import com.addressbook.utils.SortedListOf;
 
 public class GroupHelper extends BaseHelper {
 	
@@ -14,9 +15,9 @@ public class GroupHelper extends BaseHelper {
 		super(manager);
 	}
 	
-	private List<GroupData> cachedGroups;
+	private SortedListOf<GroupData> cachedGroups;
 	
-	public List<GroupData> getGroups() {
+	public SortedListOf<GroupData> getGroups() {
 		if (cachedGroups == null) {
 			rebuildGroupsCache();
 		}
@@ -24,7 +25,7 @@ public class GroupHelper extends BaseHelper {
 	}
 	
 	private void rebuildGroupsCache() {
-		cachedGroups = new ArrayList<GroupData>();
+		cachedGroups = new SortedListOf<GroupData>();
 		List<WebElement> checkboxes = driver.findElements(By.name("selected[]"));
 		for (WebElement checkbox : checkboxes) {
 			String title = checkbox.getAttribute("title");		
