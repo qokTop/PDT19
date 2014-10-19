@@ -9,12 +9,46 @@ import org.openqa.selenium.WebElement;
 import com.addressbook.tests.ContactData;
 
 public class ContactHelper extends BaseHelper {
-
+	
+	public boolean CREATION = true;
+	public boolean MODIFICATION = false;
+	
 	public ContactHelper(ApplicationManager manager) {
 		super(manager);
 	}
+		
+	private List<ContactData> cachedContacts;
+	
+	public List<ContactData> getContacts() {
+		if (cachedContacts == null) {
+			rebuildContactsCache();
+		}
+		return cachedContacts;	
+	}
+	
+	private void rebuildContactsCache() {
+		cachedContacts = new ArrayList<ContactData>();
+		List<WebElement> rows = getContactRows();
+		for (WebElement row : rows) {			
+		    ContactData contact = new ContactData()
+		    // FIXME There are incorrectly columns in the table: lastName and firstname
+		    //       change objects after fixing
+		    .withFirstName(row.findElement(By.xpath(".//td[3]")).getText())
+		    .withLastName(row.findElement(By.xpath(".//td[2]")).getText());
+		    /*contact.firstName = row.findElement(By.xpath(".//td[3]")).getText();
+		    contact.lastName  = row.findElement(By.xpath(".//td[2]")).getText();*/
+		    cachedContacts.add(contact);
+		}
+	}
+	
+	private List<WebElement> getContactRows() {
+		List<WebElement> rows = driver.findElements(By.xpath("//tbody/tr"));
+		rows.remove(0);
+		rows.remove(rows.size() - 1);
+		return rows;		
+	}
 
-	public ContactHelper fillContactForm(ContactData contact) {
+	public ContactHelper fillContactForm(ContactData contact, boolean formType) {
 		type(By.name("firstname"), contact.getFirstName());
 		type(By.name("lastname"), contact.getLastName());
 		type(By.name("address"), contact.getAddress());
@@ -26,7 +60,11 @@ public class ContactHelper extends BaseHelper {
 	    selectByText(By.name("bday"), contact.getBirthDay());
 	    selectByText(By.name("bmonth"), contact.getBirthMonth());
 	    type(By.name("byear"), contact.getBirthYear());
-	    selectByText(By.name("new_group"), contact.getGroup());
+	    if (formType)
+	    	selectByText(By.name("new_group"), contact.getGroup());
+	    	/*else 
+	    		if (driver.findElements(By.name("new_group")).size() != 0)
+	    			throw new Error("There is a group selector on the modification contact from");*/   	
 	    type(By.name("address2"), contact.getSecondaryAddress());
 	    type(By.name("phone2"), contact.getSecondaryHome());
 	    return this;
@@ -34,6 +72,7 @@ public class ContactHelper extends BaseHelper {
 
 	public ContactHelper submitContactCreation() {
 		click(By.name("submit"));
+		cachedContacts = null;
 		return this;
 	}
 
@@ -48,7 +87,8 @@ public class ContactHelper extends BaseHelper {
 	}
 
 	public ContactHelper submitContactModification() {
-		click(By.name("update"));	
+		click(By.name("update"));
+		cachedContacts = null;
 		return this;
 	}
 
@@ -69,6 +109,7 @@ public class ContactHelper extends BaseHelper {
 
 	public ContactHelper removeFromGroup() {
 		click(By.name("remove"));
+		cachedContacts = null;
 		return this;
 	}
 
@@ -89,50 +130,46 @@ public class ContactHelper extends BaseHelper {
 
 	public ContactHelper addContactToGroup() {
 		click(By.name("add"));		
+		cachedContacts = null;
 		return this;
 	}
 
-	public ContactHelper deleteContact() {
+	public ContactHelper removeContact() {
 		click(By.xpath("//div//form[2]/input[@name='update']"));
+		cachedContacts = null;
 		return this;
-	}
-
-	public List<ContactData> getContacts() {
-		/*List<ContactData> contacts = new ArrayList<ContactData>();
-		List<WebElement> checkboxes = driver.findElements(By.name("selected[]"));
-		for (WebElement checkbox : checkboxes) {
-			ContactData contact = new ContactData();
-			String title = checkbox.getAttribute("title");
-			String firstLastNames = title.substring("Select (".length(), title.length() - ")".length());	
-			//contact.firstName = firstLastNames.substring(0, firstLastNames.indexOf(" ") - 1);
-			contact.lastName = firstLastNames.substring(firstLastNames.indexOf(" ") + 1, firstLastNames.length());
-			contacts.add(contact);
-		{
-		return contacts;*/
-		List<ContactData> contacts = new ArrayList<ContactData>();
-		List<WebElement> rows = getContactRows();
-		for (WebElement row : rows) {			
-		    ContactData contact = new ContactData()
-		    // FIXME There are incorrectly columns in the table: lastName and firstname
-		    //       change objects after fixing
-		    .withFirstName(row.findElement(By.xpath(".//td[3]")).getText())
-		    .withLastName(row.findElement(By.xpath(".//td[2]")).getText());
-		   /* contact.firstName = row.findElement(By.xpath(".//td[3]")).getText();
-		    contact.lastName  = row.findElement(By.xpath(".//td[2]")).getText();*/
-		    contacts.add(contact);
-		}
-		return contacts;
-	}
-	
-	private List<WebElement> getContactRows() {
-		List<WebElement> rows = driver.findElements(By.xpath("//tbody/tr"));
-		rows.remove(0);
-		rows.remove(rows.size() - 1);
-		return rows;		
 	}
 
 	public String getContactLastName(int index) {
 		return driver.findElement(By.xpath("//tbody//tr[" + (index + 2) +"]//td[2]")).getText();
 	}
 
+	//****************************************************************************************
+	
+	public ContactHelper createContact(ContactData contact) {
+		manager.getNavigationHelper().goToContactCreationPage();    
+		fillContactForm(contact, manager.getContactHelper().CREATION);
+		submitContactCreation();
+	    returnToHomePage();
+	    rebuildContactsCache();
+		return this;
+	}
+	
+	public ContactHelper modifyContact(int index, ContactData contact) {
+		openEditPageOfContact(index);
+		fillContactForm(contact, manager.getContactHelper().MODIFICATION);
+		submitContactModification();
+		returnToHomePage();	
+		rebuildContactsCache();
+		return this;
+	}
+	
+	public ContactHelper deleteContact(int index) {
+		openEditPageOfContact(index);
+		removeContact();
+		returnToHomePage();	
+		rebuildContactsCache();
+		return this;
+	}
+	
 }

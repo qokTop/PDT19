@@ -13,21 +13,17 @@ public class ContactModificationTests extends TestBase {
 	@Test(dataProvider = "randomValidContactGenerator")
 	public void testModifyContact(ContactData contact) {
 		// save old state
-		List<ContactData> oldList = appManager.getContactHelper().getContacts();
-		
-		Random rnd = new Random();
-	    int index = rnd.nextInt(oldList.size() - 1);
+		List<ContactData> oldList = appManager.getContactHelper().getContacts();		
 		
 		// actions
-		appManager.getContactHelper()
-			.openEditPageOfContact(index)
-			.fillContactForm(contact)
-			.submitContactModification()
-			.returnToHomePage();
-		
+		Random rnd = new Random();
+	    int index = rnd.nextInt(oldList.size() - 1);
+	    appManager.getContactHelper().modifyContact(index, contact);
+			
 		// save new state
 	    List<ContactData> newList = appManager.getContactHelper().getContacts();
 	    
+	    // compare states
 	    oldList.remove(index);
 	    oldList.add(contact);
 	    Collections.sort(oldList);
@@ -47,13 +43,14 @@ public class ContactModificationTests extends TestBase {
 		appManager.getContactHelper()
 			.viewDetailsOfContact(index)
 			.initModificationOfContact()
-			.fillContactForm(contact)
+			.fillContactForm(contact, appManager.getContactHelper().MODIFICATION)
 			.submitContactModification()
 			.returnToHomePage();
 		
 		// save new state
 	    List<ContactData> newList = appManager.getContactHelper().getContacts();
 	    
+	    // compare states
 	    oldList.remove(index);
 	    oldList.add(contact);
 	    Collections.sort(oldList);
@@ -61,7 +58,7 @@ public class ContactModificationTests extends TestBase {
 	    assertEquals(newList, oldList);
 	}
 	
-	@Test(dataProvider = "provideGroupNonEmptyNames")
+	//@Test(dataProvider = "provideGroupNonEmptyNames")
 	public void testAddContactToGroup(List<String> groupNames) {
 		String tdGroupNameAll = "[all]";
 			
@@ -109,7 +106,7 @@ public class ContactModificationTests extends TestBase {
 	    assertEquals(newList, oldList);
 	}
 	
-	@Test(dataProvider = "provideGroupNonEmptyNames")
+	//@Test(dataProvider = "provideGroupNonEmptyNames")
 	public void testRemoveContactFromGroup(List<String> groupNames) {
 		// save old state
 		int indexOfGroupName;
@@ -129,12 +126,6 @@ public class ContactModificationTests extends TestBase {
 		else
 			index = 0;
 		
-		/*String lastNameOfModifiedContact = appManager.getContactHelper().getContactLastName(index);
-		
-		// get the last name of modified contact
-		ContactData contact = new ContactData()
-			.withLastName(lastNameOfModifiedContact);*/
-		
 		// actions
 		appManager.getContactHelper()
 			.selectContact(index)
@@ -145,6 +136,7 @@ public class ContactModificationTests extends TestBase {
 		// save new state
 	    List<ContactData> newList = appManager.getContactHelper().getContacts();
 	    
+	    // compare states
 	    oldList.remove(index);
 	    Collections.sort(oldList);
 	    Collections.sort(newList);

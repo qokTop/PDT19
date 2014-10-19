@@ -15,17 +15,12 @@ public class GroupModificationTests extends TestBase {
 		appManager.getNavigationHelper().goToGroupsPage();
 		
 		// save old state
-	    List<GroupData> oldList = appManager.getGroupHelper().getGroups();
-	    
-	    Random rnd = new Random();
-	    int index = rnd.nextInt(oldList.size() - 1);
+	    List<GroupData> oldList = appManager.getGroupHelper().getGroups();	    
 	    
 	    // actions
-		appManager.getGroupHelper()
-			.initModificationOfGroup(index)
-			.fillGroupForm(group)
-			.submitGroupModification()
-			.returnToGroupsPage();
+	    Random rnd = new Random();
+	    int index = rnd.nextInt(oldList.size() - 1);
+	    appManager.getGroupHelper().modifyGroup(index, group);
 		
 		// save new state
 	    List<GroupData> newList = appManager.getGroupHelper().getGroups();

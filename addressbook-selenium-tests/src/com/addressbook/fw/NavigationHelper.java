@@ -8,8 +8,9 @@ public class NavigationHelper extends BaseHelper {
 		super(manager);
 	}
 
-	public void openMainPage() {
-	    driver.get(manager.baseUrl + "/addressbookv4.1.4");
+	public void openMainPage() {	    
+	    //click(By.linkText("home"));
+		driver.get(manager.baseUrl + "/addressbookv4.1.4");
 	}
 
 	public void goToGroupsPage() {

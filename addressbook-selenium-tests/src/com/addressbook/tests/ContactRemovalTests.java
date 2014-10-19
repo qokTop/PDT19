@@ -15,18 +15,15 @@ public class ContactRemovalTests extends TestBase {
 		// save old state
 		List<ContactData> oldList = appManager.getContactHelper().getContacts();
 		
+		// actions
 		Random rnd = new Random();
 	    int index = rnd.nextInt(oldList.size() - 1);
-		
-		// actions
-		appManager.getContactHelper()
-			.openEditPageOfContact(index)
-			.deleteContact()
-			.returnToHomePage();
+	    appManager.getContactHelper().deleteContact(index);
 		
 		// save new state
 	    List<ContactData> newList = appManager.getContactHelper().getContacts();
 	    
+	    // compare states
 	    oldList.remove(index);
 	    Collections.sort(oldList);
 	    assertEquals(newList, oldList);
@@ -43,14 +40,12 @@ public class ContactRemovalTests extends TestBase {
 			List<ContactData> oldList = appManager.getContactHelper().getContacts();
 			
 			// actions
-			appManager.getContactHelper()
-				.openEditPageOfContact(tdNumOfContact)
-				.deleteContact()
-				.returnToHomePage();	
+			appManager.getContactHelper().deleteContact(tdNumOfContact);	
 			
 			// save new state
 		    List<ContactData> newList = appManager.getContactHelper().getContacts();
 		    
+		    // compare states
 		    oldList.remove(tdNumOfContact);
 		    Collections.sort(oldList);
 		    assertEquals(newList, oldList);

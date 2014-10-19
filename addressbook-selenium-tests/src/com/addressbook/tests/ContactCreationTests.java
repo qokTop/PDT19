@@ -14,16 +14,12 @@ public class ContactCreationTests extends TestBase {
 	List<ContactData> oldList = appManager.getContactHelper().getContacts();
     
     // actions
-	appManager.getNavigationHelper().goToContactCreationPage();
-    
-	appManager.getContactHelper()
-		.fillContactForm(contact)
-		.submitContactCreation()
-    	.returnToHomePage();
-    
+	appManager.getContactHelper().createContact(contact);
+	   
     // save new state
     List<ContactData> newList = appManager.getContactHelper().getContacts();
     
+    // compare states
     oldList.add(contact);
     Collections.sort(oldList);
     assertEquals(newList, oldList);
